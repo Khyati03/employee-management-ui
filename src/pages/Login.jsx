@@ -18,7 +18,9 @@ function Login() {
 
             localStorage.setItem("token", response.data.token);
 
+
             alert("Login Successful!");
+            navigate("/dashboard");
 
         } catch (error) {
 
