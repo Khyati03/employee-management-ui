@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import api from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 function Employees() {
+    const navigate = useNavigate();
 
     const [employees, setEmployees] = useState([]);
 
@@ -25,6 +27,13 @@ function Employees() {
             <h2>Employees</h2>
 
             <hr />
+
+            <button
+                className="btn btn-success mb-3"
+                onClick={() => navigate("/employees/add")}
+            >
+                Add Employee
+            </button>
 
             <table className="table table-bordered table-striped">
 
