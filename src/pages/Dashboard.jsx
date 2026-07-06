@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 function Dashboard() {
+    const navigate = useNavigate();
     return (
         <div className="container mt-5">
 
@@ -10,7 +13,10 @@ function Dashboard() {
 
             <div className="mt-4">
 
-                <button className="btn btn-primary me-3">
+                <button
+                    className="btn btn-primary me-3"
+                    onClick={() => navigate("/employees")}
+                >
                     Employees
                 </button>
 
