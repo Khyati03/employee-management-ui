@@ -21,6 +21,34 @@ function Employees() {
         }
     };
 
+ const handleDelete = async (id) => {
+
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this employee?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            await api.delete(`/employees/${id}`);
+
+            alert("Employee deleted successfully!");
+
+            fetchEmployees();
+
+        } catch (error) {
+
+            console.log(error);
+
+            alert("Unable to delete employee.");
+
+        }
+
+    };
+
     return (
         <div className="container mt-5">
 
@@ -43,6 +71,7 @@ function Employees() {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Department</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
 
@@ -59,6 +88,24 @@ function Employees() {
                             <td>{employee.email}</td>
 
                             <td>{employee.department?.name}</td>
+
+                            <td>
+
+                                    <button
+                                        className="btn btn-warning btn-sm me-2"
+                                        onClick={() => navigate(`/employees/edit/${employee.id}`)}
+                                    >
+                                        Edit
+                                    </button>
+
+                                    <button
+                                        className="btn btn-danger btn-sm"
+                                        onClick={() => handleDelete(employee.id)}
+                                    >
+                                        Delete
+                                    </button>
+
+                                </td>
 
                         </tr>
 
