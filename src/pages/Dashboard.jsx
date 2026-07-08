@@ -20,7 +20,10 @@ function Dashboard() {
                     Employees
                 </button>
 
-                <button className="btn btn-success me-3">
+                <button
+                className="btn btn-success me-3"
+                onClick={() => navigate("/departments")}
+                >
                     Departments
                 </button>
 

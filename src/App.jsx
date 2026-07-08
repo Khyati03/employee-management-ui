@@ -5,6 +5,8 @@ import Employees from "./pages/Employees";
 import AddEmployee from "./pages/AddEmployee";
 import ProtectedRoute from "./components/ProtectedRoute";
 import EditEmployee from "./pages/EditEmployee";
+import Departments from "./pages/Departments";
+import AddDepartment from "./pages/AddDepartment";
 
 function App() {
     return (
@@ -44,6 +46,16 @@ function App() {
                 element={
                     <ProtectedRoute>
                         <EditEmployee />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route path="/departments" element={<Departments />} />
+            <Route
+                path="/departments/add"
+                element={
+                    <ProtectedRoute>
+                        <AddDepartment />
                     </ProtectedRoute>
                 }
             />
