@@ -87,7 +87,7 @@ function Employees() {
 
                             <td>{employee.email}</td>
 
-                            <td>{employee.department?.name}</td>
+                            <td>{employee.department?.departmentName}</td>
 
                             <td>
 
