@@ -6,19 +6,34 @@ function Employees() {
     const navigate = useNavigate();
 
     const [employees, setEmployees] = useState([]);
+    const [searchName, setSearchName] = useState("");
 
     useEffect(() => {
         fetchEmployees();
     }, []);
 
     const fetchEmployees = async () => {
+
         try {
-            const response = await api.get("/employees");
+
+            let response;
+
+            if (searchName.trim() === "") {
+                response = await api.get("/employees");
+            } else {
+                response = await api.get(`/employees/search?name=${searchName}`);
+            }
+
             setEmployees(response.data);
+
         } catch (error) {
+
             console.log(error);
+
             alert("Unable to load employees");
+
         }
+
     };
 
  const handleDelete = async (id) => {
@@ -61,6 +76,23 @@ function Employees() {
                 onClick={() => navigate("/employees/add")}
             >
                 Add Employee
+            </button>
+
+            <div className="mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search employee by name..."
+                    value={searchName}
+                    onChange={(e) => setSearchName(e.target.value)}
+                />
+            </div>
+
+            <button
+                className="btn btn-primary mb-3"
+                onClick={fetchEmployees}
+            >
+                Search
             </button>
 
             <table className="table table-bordered table-striped">
