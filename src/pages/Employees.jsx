@@ -7,10 +7,15 @@ function Employees() {
 
     const [employees, setEmployees] = useState([]);
     const [searchName, setSearchName] = useState("");
+    const [sortField, setSortField] = useState("");
+    const [sortDirection, setSortDirection] = useState("asc");
+    const [page, setPage] = useState(0);
+    const [size] = useState(2);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         fetchEmployees();
-    }, []);
+    }, [page]);
 
     const fetchEmployees = async () => {
 
@@ -18,19 +23,36 @@ function Employees() {
 
             let response;
 
-            if (searchName.trim() === "") {
-                response = await api.get("/employees");
-            } else {
-                response = await api.get(`/employees/search?name=${searchName}`);
-            }
+            if (searchName.trim() !== "") {
 
-            setEmployees(response.data);
+                response = await api.get(
+                    `/employees/search?name=${searchName}`
+                );
+
+                setEmployees(response.data);
+
+            } else if (sortField !== "") {
+
+                response = await api.get(
+                    `/employees/sort?field=${sortField}&direction=${sortDirection}`
+                );
+
+                setEmployees(response.data);
+
+            } else {
+
+                response = await api.get(
+                    `/employees/page?page=${page}&size=${size}`
+                );
+
+                setEmployees(response.data.content);
+                setTotalPages(response.data.totalPages);
+
+            }
 
         } catch (error) {
 
             console.log(error);
-
-            alert("Unable to load employees");
 
         }
 
@@ -95,6 +117,52 @@ function Employees() {
                 Search
             </button>
 
+            <div className="row mb-3">
+
+                <div className="col-md-4">
+
+                    <label>Sort By</label>
+
+                    <select
+                        className="form-select"
+                        value={sortField}
+                        onChange={(e) => setSortField(e.target.value)}
+                    >
+
+                        <option value="">None</option>
+                        <option value="name">Name</option>
+                        <option value="email">Email</option>
+
+                    </select>
+
+                </div>
+
+                <div className="col-md-4">
+
+                    <label>Order</label>
+
+                    <select
+                        className="form-select"
+                        value={sortDirection}
+                        onChange={(e) => setSortDirection(e.target.value)}
+                    >
+
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <button
+                className="btn btn-secondary mb-3 ms-2"
+                onClick={fetchEmployees}
+            >
+                Sort
+            </button>
+
             <table className="table table-bordered table-striped">
 
                 <thead>
@@ -146,6 +214,29 @@ function Employees() {
                 </tbody>
 
             </table>
+            <div className="d-flex justify-content-between mt-3">
+
+                <button
+                    className="btn btn-secondary"
+                    disabled={page === 0}
+                    onClick={() => setPage(page - 1)}
+                >
+                    Previous
+                </button>
+
+                <span>
+                    Page {page + 1} of {totalPages}
+                </span>
+
+                <button
+                    className="btn btn-secondary"
+                    disabled={page + 1 >= totalPages}
+                    onClick={() => setPage(page + 1)}
+                >
+                    Next
+                </button>
+
+            </div>
 
         </div>
     );
