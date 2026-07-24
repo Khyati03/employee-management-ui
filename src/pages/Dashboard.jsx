@@ -1,37 +1,105 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 function Dashboard() {
     const navigate = useNavigate();
+    const [dashboard, setDashboard] = useState({
+        totalEmployees: 0,
+        totalDepartments: 0,
+        departmentEmployeeCounts: []
+    });
+
+    useEffect(() => {
+        fetchDashboard();
+        }, []);
+
+    const fetchDashboard = async () => {
+        try{
+               const response = await api.get("/dashboard");
+               setDashboard(response.data);
+            } catch(error){
+                console.log(error);
+           }
+        };
+
     return (
         <div className="container mt-5">
 
-            <h2>Employee Management Dashboard</h2>
+            <h2>Dashboard</h2>
 
             <hr />
 
-            <h4>Welcome Admin</h4>
+            <div className="row">
 
-            <div className="mt-4">
+                <div className="col-md-6 mb-4">
 
-                <button
-                    className="btn btn-primary me-3"
-                    onClick={() => navigate("/employees")}
-                >
-                    Employees
-                </button>
+                    <div className="card bg-primary text-white shadow-lg">
 
-                <button
-                className="btn btn-success me-3"
-                onClick={() => navigate("/departments")}
-                >
-                    Departments
-                </button>
+                        <div className="card-body text-center">
 
-                <button className="btn btn-danger">
-                    Logout
-                </button>
+                            <h5>Total Employees</h5>
+
+                            <h1>{dashboard.totalEmployees}</h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div className="col-md-6 mb-4">
+
+                    <div className="card bg-success text-white shadow-lg">
+
+                        <div className="card-body text-center">
+
+                            <h5>Total Departments</h5>
+
+                            <h1>{dashboard.totalDepartments}</h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
+
+            <hr />
+
+            <h4>Employees by Department</h4>
+
+            <table className="table table-bordered mt-3">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Department</th>
+                        <th>Employees</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {dashboard.departmentEmployeeCounts?.map((item) => (
+
+                        <tr key={item.departmentName}>
+
+                            <td>{item.departmentName}</td>
+
+                            <td>{item.employeeCount}</td>
+
+                        </tr>
+
+                    ))}
+
+                </tbody>
+
+            </table>
 
         </div>
     );
