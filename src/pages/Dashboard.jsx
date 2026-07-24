@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer
+} from "recharts";
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -9,21 +18,55 @@ function Dashboard() {
         totalDepartments: 0,
         departmentEmployeeCounts: []
     });
+    const [view, setView] = useState("table");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchDashboard();
         }, []);
 
     const fetchDashboard = async () => {
-        try{
-               const response = await api.get("/dashboard");
-               setDashboard(response.data);
-            } catch(error){
-                console.log(error);
-           }
-        };
+
+        setLoading(true);
+
+        try {
+
+            const response = await api.get("/dashboard");
+
+            setDashboard(response.data);
+
+        } catch (error) {
+
+            console.log(error);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+    if (loading) {
+
+        return (
+
+            <div className="d-flex justify-content-center align-items-center vh-100">
+
+                <div className="spinner-border text-primary" role="status">
+
+                    <span className="visually-hidden">Loading...</span>
+
+                </div>
+
+            </div>
+
+        );
+
+    }
 
     return (
+
         <div className="container mt-5">
 
             <h2>Dashboard</h2>
@@ -68,6 +111,27 @@ function Dashboard() {
 
             <hr />
 
+            <div className="mb-3">
+
+                <button
+                    className={`btn ${view === "table" ? "btn-primary" : "btn-outline-primary"} me-2`}
+                    onClick={() => setView("table")}
+                >
+                    Tabular View
+                </button>
+
+                <button
+                    className={`btn ${view === "chart" ? "btn-success" : "btn-outline-success"}`}
+                    onClick={() => setView("chart")}
+                >
+                    Graphical View
+                </button>
+
+            </div>
+
+            {view === "table" && (
+                <>
+
             <h4>Employees by Department</h4>
 
             <table className="table table-bordered mt-3">
@@ -100,6 +164,47 @@ function Dashboard() {
                 </tbody>
 
             </table>
+            </>
+            )}
+
+            <hr />
+
+            {view === "chart" && (
+                <>
+
+            <h4>Employees by Department (Chart)</h4>
+
+            <div style={{ width: "100%", height: 350 }}>
+
+                <ResponsiveContainer>
+
+                    <BarChart
+                        data={dashboard.departmentEmployeeCounts}
+                    >
+
+                        <CartesianGrid strokeDasharray="3 3" />
+
+                        <XAxis dataKey="departmentName" />
+
+                        <YAxis />
+
+                        <Tooltip
+                            formatter={(value) => [`${value} Employees`, "Count"]}
+                        />
+
+                        <Bar
+                            dataKey="employeeCount"
+                                fill="#0d6efd"
+                                radius={[8, 8, 0, 0]}
+                        />
+
+                    </BarChart>
+
+                </ResponsiveContainer>
+
+            </div>
+             </>
+            )}
 
         </div>
     );
