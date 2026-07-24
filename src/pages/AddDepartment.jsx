@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function AddDepartment() {
 
@@ -16,7 +17,7 @@ function AddDepartment() {
                 departmentName
             });
 
-            alert("Department Added Successfully!");
+            toast.success("Department Added Successfully!");
 
             navigate("/departments");
 
@@ -24,7 +25,7 @@ function AddDepartment() {
 
             console.log(error);
 
-            alert("Unable to add department.");
+            toast.error("Unable to add department.");
 
         }
 

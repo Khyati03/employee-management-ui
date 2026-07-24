@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Employees() {
     const navigate = useNavigate();
@@ -72,7 +73,7 @@ function Employees() {
 
             await api.delete(`/employees/${id}`);
 
-            alert("Employee deleted successfully!");
+            toast.success("Employee deleted successfully!");
 
             fetchEmployees();
 
@@ -80,7 +81,7 @@ function Employees() {
 
             console.log(error);
 
-            alert("Unable to delete employee.");
+            toast.error("Unable to delete employee.");
 
         }
 

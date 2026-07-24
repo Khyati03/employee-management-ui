@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
+import { toast } from "react-toastify";
 
 function AddEmployee() {
 
@@ -26,7 +27,7 @@ function AddEmployee() {
                 }
             });
 
-            alert("Employee Added Successfully!");
+            toast.success("Employee Added Successfully!");
 
             navigate("/employees");
 
@@ -36,7 +37,7 @@ function AddEmployee() {
             console.log("Response:", error.response?.data);
             console.log(error);
 
-            alert("Unable to save employee.");
+            toast.error("Unable to save employee.");
 
         }
     };
@@ -57,7 +58,7 @@ const fetchDepartments = async () => {
             console.log(error.response.data);
             console.log(error);
 
-            alert("Unable to save employee.");
+            toast.error("Unable to save employee.");
 
     }
 

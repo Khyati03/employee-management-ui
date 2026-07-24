@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Login() {
 
@@ -19,12 +20,12 @@ function Login() {
             localStorage.setItem("token", response.data.token);
 
 
-            alert("Login Successful!");
+            toast.success("Login Successful!");
             navigate("/dashboard");
 
         } catch (error) {
 
-            alert("Invalid Username or Password");
+            toast.error("Invalid Username or Password");
 
         }
     };

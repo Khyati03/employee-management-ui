@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api/api";
+import { toast } from "react-toastify";
 
 function EditEmployee() {
     const { id } = useParams();
@@ -25,7 +26,7 @@ function EditEmployee() {
 
              console.log(error);
 
-             alert("Unable to load employee.");
+             toast.error("Unable to load employee.");
 
          }
 
@@ -41,7 +42,7 @@ function EditEmployee() {
              department: null
          });
 
-         alert("Employee Updated Successfully!");
+         toast.success("Employee Updated Successfully!");
 
          navigate("/employees");
 
@@ -49,7 +50,7 @@ function EditEmployee() {
 
          console.log(error);
 
-         alert("Unable to update employee.");
+         toast.error("Unable to update employee.");
 
      }
 

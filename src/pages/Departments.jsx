@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Departments() {
 
@@ -23,7 +24,7 @@ function Departments() {
 
             console.log(error);
 
-            alert("Unable to load departments");
+            toast.error("Unable to load departments");
 
         }
 
