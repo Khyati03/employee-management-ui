@@ -14,6 +14,8 @@ function Employees() {
     const [size] = useState(2);
     const [totalPages, setTotalPages] = useState(0);
 
+    const role = localStorage.getItem("role");
+
     useEffect(() => {
         fetchEmployees();
     }, [page]);
@@ -94,12 +96,14 @@ function Employees() {
 
             <hr />
 
-            <button
-                className="btn btn-success mb-3"
-                onClick={() => navigate("/employees/add")}
-            >
-                Add Employee
-            </button>
+            {role === "ADMIN" && (
+                <button
+                    className="btn btn-success mb-3"
+                    onClick={() => navigate("/employees/add")}
+                >
+                    Add Employee
+                </button>
+            )}
 
             <div className="mb-3">
                 <input
@@ -192,19 +196,25 @@ function Employees() {
 
                             <td>
 
-                                    <button
-                                        className="btn btn-warning btn-sm me-2"
-                                        onClick={() => navigate(`/employees/edit/${employee.id}`)}
-                                    >
-                                        Edit
-                                    </button>
+                                    {role === "ADMIN" ? (
+                                            <>
+                                                <button
+                                                    className="btn btn-warning btn-sm me-2"
+                                                    onClick={() => navigate(`/employees/edit/${employee.id}`)}
+                                                >
+                                                    Edit
+                                                </button>
 
-                                    <button
-                                        className="btn btn-danger btn-sm"
-                                        onClick={() => handleDelete(employee.id)}
-                                    >
-                                        Delete
-                                    </button>
+                                                <button
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={() => handleDelete(employee.id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <span className="text-muted">View Only</span>
+                                        )}
 
                                 </td>
 

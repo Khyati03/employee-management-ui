@@ -50,7 +50,14 @@ function App() {
                 }
             />
 
-            <Route path="/departments" element={<Departments />} />
+            <Route
+                path="/departments"
+                element={
+                    <ProtectedRoute>
+                        <Departments />
+                    </ProtectedRoute>
+                }
+            />
             <Route
                 path="/departments/add"
                 element={

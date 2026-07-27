@@ -14,4 +14,24 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+// 👇 Add this here
+api.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+
+        if (error.response?.status === 401) {
+
+            localStorage.clear();
+
+            alert("Session expired. Please login again.");
+
+            window.location.href = "/";
+        }
+
+        return Promise.reject(error);
+    }
+);
+
 export default api;

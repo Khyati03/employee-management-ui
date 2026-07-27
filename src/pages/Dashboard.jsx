@@ -65,9 +65,24 @@ function Dashboard() {
 
     }
 
+    const handleLogout = () => {
+        localStorage.clear();
+
+        navigate("/");
+        };
+
     return (
 
         <div className="container mt-5">
+
+            <div className="d-flex justify-content-end mb-3">
+                <button
+                    className="btn btn-danger"
+                    onClick={handleLogout}
+                >
+                    Logout
+                </button>
+            </div>
 
             <h2>Dashboard</h2>
 
