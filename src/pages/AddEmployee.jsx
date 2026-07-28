@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import { toast } from "react-toastify";
+import Navbar from "../components/Navbar";
 
 function AddEmployee() {
 
@@ -65,6 +66,8 @@ const fetchDepartments = async () => {
 };
 
     return (
+        <>
+        <Navbar />
         <div className="container mt-5">
 
             <h2>Add Employee</h2>
@@ -130,6 +133,7 @@ const fetchDepartments = async () => {
             </button>
 
         </div>
+        </>
     );
 }
 

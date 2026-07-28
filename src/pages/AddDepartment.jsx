@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Navbar from "../components/Navbar";
 
 function AddDepartment() {
 
@@ -32,6 +33,8 @@ function AddDepartment() {
     };
 
     return (
+        <>
+        <Navbar />
         <div className="container mt-5">
 
             <h2>Add Department</h2>
@@ -53,6 +56,7 @@ function AddDepartment() {
             </button>
 
         </div>
+        </>
     );
 }
 

@@ -7,6 +7,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import EditEmployee from "./pages/EditEmployee";
 import Departments from "./pages/Departments";
 import AddDepartment from "./pages/AddDepartment";
+import Profile from "./pages/Profile";
+import RoleProtectedRoute from "./components/RoleProtectedRoute";
 
 function App() {
     return (
@@ -26,27 +28,27 @@ function App() {
             <Route
                 path="/employees"
                 element={
-                    <ProtectedRoute>
+                    <RoleProtectedRoute role="ADMIN">
                         <Employees />
-                    </ProtectedRoute>
+                    </RoleProtectedRoute>
                 }
             />
 
             <Route
                 path="/employees/add"
                 element={
-                    <ProtectedRoute>
-                        <AddEmployee />
-                    </ProtectedRoute>
+                   <RoleProtectedRoute role="ADMIN">
+                       <AddEmployee />
+                   </RoleProtectedRoute>
                 }
             />
 
             <Route
                 path="/employees/edit/:id"
                 element={
-                    <ProtectedRoute>
-                        <EditEmployee />
-                    </ProtectedRoute>
+                    <RoleProtectedRoute role="ADMIN">
+                        <AddEmployee />
+                    </RoleProtectedRoute>
                 }
             />
 
@@ -63,6 +65,15 @@ function App() {
                 element={
                     <ProtectedRoute>
                         <AddDepartment />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/profile"
+                element={
+                    <ProtectedRoute>
+                        <Profile />
                     </ProtectedRoute>
                 }
             />

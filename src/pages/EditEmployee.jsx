@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api/api";
 import { toast } from "react-toastify";
+import Navbar from "../components/Navbar";
 
 function EditEmployee() {
     const { id } = useParams();
@@ -58,6 +59,8 @@ function EditEmployee() {
 
 
      return (
+         <>
+           <Navbar />
             <div className="container mt-5">
 
                 <h2>Edit Employee</h2>
@@ -96,6 +99,7 @@ function EditEmployee() {
                 </button>
 
             </div>
+            </>
         );
 }
 

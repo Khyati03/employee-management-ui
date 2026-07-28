@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Navbar from "../components/Navbar";
 
 function Departments() {
 
@@ -31,6 +32,8 @@ function Departments() {
     };
 
     return (
+        <>
+        <Navbar />
         <div className="container mt-5">
 
             <h2>Departments</h2>
@@ -74,6 +77,7 @@ function Departments() {
             </table>
 
         </div>
+        </>
     );
 }
 

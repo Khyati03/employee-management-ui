@@ -10,6 +10,7 @@ import {
     Tooltip,
     ResponsiveContainer
 } from "recharts";
+import Navbar from "../components/Navbar";
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -48,41 +49,26 @@ function Dashboard() {
     };
 
     if (loading) {
-
         return (
-
             <div className="d-flex justify-content-center align-items-center vh-100">
-
                 <div className="spinner-border text-primary" role="status">
-
                     <span className="visually-hidden">Loading...</span>
-
                 </div>
-
             </div>
-
         );
-
     }
 
-    const handleLogout = () => {
-        localStorage.clear();
 
-        navigate("/");
-        };
 
     return (
 
+        <>
+
+        <Navbar />
+
+
         <div className="container mt-5">
 
-            <div className="d-flex justify-content-end mb-3">
-                <button
-                    className="btn btn-danger"
-                    onClick={handleLogout}
-                >
-                    Logout
-                </button>
-            </div>
 
             <h2>Dashboard</h2>
 
@@ -222,6 +208,7 @@ function Dashboard() {
             )}
 
         </div>
+        </>
     );
 }
 

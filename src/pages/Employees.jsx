@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Navbar from "../components/Navbar";
 
 function Employees() {
     const navigate = useNavigate();
@@ -90,6 +91,8 @@ function Employees() {
     };
 
     return (
+        <>
+        <Navbar />
         <div className="container mt-5">
 
             <h2>Employees</h2>
@@ -250,6 +253,7 @@ function Employees() {
             </div>
 
         </div>
+        </>
     );
 }
 
