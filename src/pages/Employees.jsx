@@ -14,6 +14,8 @@ function Employees() {
     const [page, setPage] = useState(0);
     const [size] = useState(2);
     const [totalPages, setTotalPages] = useState(0);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
 
     const role = localStorage.getItem("role");
 
@@ -62,19 +64,18 @@ function Employees() {
 
     };
 
- const handleDelete = async (id) => {
+    const handleDelete = (employee) => {
 
-        const confirmed = window.confirm(
-            "Are you sure you want to delete this employee?"
-        );
+       setSelectedEmployee(employee);
 
-        if (!confirmed) {
-            return;
-        }
+       setShowModal(true);
+
+    };
+    const confirmDelete = async () => {
 
         try {
 
-            await api.delete(`/employees/${id}`);
+            await api.delete(`/employees/${selectedEmployee.id}`);
 
             toast.success("Employee deleted successfully!");
 
@@ -82,12 +83,48 @@ function Employees() {
 
         } catch (error) {
 
-            console.log(error);
+            console.log(error.response?.status);
+            console.log(error.response?.data);
 
             toast.error("Unable to delete employee.");
 
+        } finally {
+
+            setShowModal(false);
+
+            setSelectedEmployee(null);
+
         }
 
+    };
+
+    const downloadCsv = async () => {
+
+        try {
+
+            const response = await api.get("/employees/export/csv", {
+                responseType: "blob"
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+
+            const link = document.createElement("a");
+
+            link.href = url;
+
+            link.setAttribute("download", "employees.csv");
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
     };
 
     return (
@@ -100,12 +137,23 @@ function Employees() {
             <hr />
 
             {role === "ADMIN" && (
-                <button
-                    className="btn btn-success mb-3"
-                    onClick={() => navigate("/employees/add")}
-                >
-                    Add Employee
-                </button>
+                <div className="d-flex justify-content-center gap-3 mb-4">
+
+                    <button
+                        className="btn btn-success"
+                        onClick={() => navigate("/employees/add")}
+                    >
+                        Add Employee
+                    </button>
+
+                    <button
+                        className="btn btn-primary"
+                        onClick={downloadCsv}
+                    >
+                        Export CSV
+                    </button>
+
+                </div>
             )}
 
             <div className="mb-3">
@@ -210,7 +258,7 @@ function Employees() {
 
                                                 <button
                                                     className="btn btn-danger btn-sm"
-                                                    onClick={() => handleDelete(employee.id)}
+                                                    onClick={() => handleDelete(employee)}
                                                 >
                                                     Delete
                                                 </button>
@@ -251,6 +299,57 @@ function Employees() {
                 </button>
 
             </div>
+
+            {showModal && (
+                <div
+                    className="modal show fade d-block"
+                    tabIndex="-1"
+                    style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+                >
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+
+                            <div className="modal-header">
+                                <h5 className="modal-title">
+                                    Delete Employee
+                                </h5>
+
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={() => setShowModal(false)}
+                                ></button>
+                            </div>
+
+                            <div className="modal-body">
+                                <p>
+                                    Are you sure you want to delete
+                                    <strong> {selectedEmployee?.name}</strong>?
+                                </p>
+                            </div>
+
+                            <div className="modal-footer">
+
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={() => setShowModal(false)}
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={confirmDelete}
+                                >
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            )}
 
         </div>
         </>
