@@ -10,7 +10,7 @@ function RoleProtectedRoute({ children, role }) {
     }
 
     if (userRole !== role) {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to="/access-denied" replace />;
     }
 
     return children;

@@ -1,10 +1,13 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const api = axios.create({
     baseURL: "http://localhost:8081",
 });
 
+// Request Interceptor
 api.interceptors.request.use((config) => {
+
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -12,26 +15,40 @@ api.interceptors.request.use((config) => {
     }
 
     return config;
+
 });
 
-// 👇 Add this here
+// Response Interceptor
 api.interceptors.response.use(
-    (response) => {
-        return response;
-    },
+
+    (response) => response,
+
     (error) => {
 
-        if (error.response?.status === 401) {
+        if (error.response) {
 
-            localStorage.clear();
+            if (error.response.status === 401) {
 
-            alert("Session expired. Please login again.");
+                toast.error("Session expired. Please login again.");
 
-            window.location.href = "/";
+                localStorage.clear();
+
+                window.location.href = "/";
+
+            }
+
+            if (error.response.status === 403) {
+
+                window.location.href = "/access-denied";
+
+            }
+
         }
 
         return Promise.reject(error);
+
     }
+
 );
 
 export default api;

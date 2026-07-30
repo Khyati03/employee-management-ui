@@ -9,6 +9,8 @@ import Departments from "./pages/Departments";
 import AddDepartment from "./pages/AddDepartment";
 import Profile from "./pages/Profile";
 import RoleProtectedRoute from "./components/RoleProtectedRoute";
+import NotFound from "./pages/NotFound";
+import AccessDenied from "./pages/AccessDenied";
 
 function App() {
     return (
@@ -47,7 +49,7 @@ function App() {
                 path="/employees/edit/:id"
                 element={
                     <RoleProtectedRoute role="ADMIN">
-                        <AddEmployee />
+                        <EditEmployee />
                     </RoleProtectedRoute>
                 }
             />
@@ -77,6 +79,12 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+
+            <Route
+                path="/access-denied"
+                element={<AccessDenied />}
+            />
+            <Route path="*" element={<NotFound />} />
 
         </Routes>
     );
